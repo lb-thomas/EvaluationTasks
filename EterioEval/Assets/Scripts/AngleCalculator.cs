@@ -12,21 +12,19 @@ public class AngleCalculator : MonoBehaviour
     public GameObject m_linePrefab;
     public GameObject m_textPrefab;
 
-    public bool m_selectingPoints = false; //TODO: Make private
+    public bool m_selectingPoints = false;
     private List<GameObject> m_selectedPoints = new List<GameObject>();
     private LineRenderer m_lineRenderer;
     private Transform m_modelParent;
     private TMP_Text m_text;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         if (_angleCalculator == null)
             _angleCalculator = this;
 
-        //SelectPoints();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (m_selectingPoints)
@@ -42,15 +40,20 @@ public class AngleCalculator : MonoBehaviour
         }
     }
 
-    public void StartSelectPoints()
+    public void StartSelectPoints(bool i_value)
     {
-        m_selectingPoints = true;
-        SelectPoints();
+        m_selectingPoints = i_value;
     }
 
     public void Clear()
     {
-        
+        foreach (GameObject i_selectedPoint in m_selectedPoints)
+            Destroy(i_selectedPoint);
+        m_selectedPoints.Clear();
+        if (m_text != null)
+            Destroy(m_text.gameObject);
+        if (m_lineRenderer != null)
+            Destroy(m_lineRenderer.gameObject);
     }
 
     public void CalculateAngle()

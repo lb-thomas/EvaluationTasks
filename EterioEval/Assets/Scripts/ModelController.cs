@@ -8,6 +8,7 @@ public class ModelController : MonoBehaviour
     public Transform m_pivot;
     public Transform m_axisMarker;
     public Transform m_boundingBox;
+    public Transform m_miniMapCamera;
     //TODO: Make these private
     public Transform m_model;
     public bool m_rotationEnabled = true;
@@ -75,10 +76,18 @@ public class ModelController : MonoBehaviour
 #region PRIVATE_METHODS
     private void SetPivotPosition(Vector3 i_newPivotPos)
     {
+
         m_model.SetParent(null);
+        m_miniMapCamera.SetParent(null);
+        m_boundingBox.SetParent(null);
+
         m_pivot.position = i_newPivotPos;
         m_axisMarker.position = i_newPivotPos;
+
         m_model.SetParent(m_pivot);
+        m_miniMapCamera.SetParent(m_pivot);
+        m_boundingBox.SetParent(m_pivot);
+
         ChangePivot(false);
     }
 
@@ -98,7 +107,6 @@ public class ModelController : MonoBehaviour
                 return false;
             }
         }
-
         return false;
     }
 
@@ -106,7 +114,6 @@ public class ModelController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
             m_pivot.Rotate(Input.GetAxis("Mouse Y") * 2f, Input.GetAxis("Mouse X") * 2f, 0);
-
     }
 
     private Bounds CalculateBounds()
@@ -117,7 +124,6 @@ public class ModelController : MonoBehaviour
         {
             l_bounds.Encapsulate(i_renderer.bounds);
         }
-
         return l_bounds;
     }
 #endregion PRIVATE_METHODS
